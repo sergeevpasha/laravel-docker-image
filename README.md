@@ -28,6 +28,7 @@ Main locale: en_US.UTF-8
 * hash
 * iconv
 * imap
+* intl
 * json
 * libxml
 * mbstring

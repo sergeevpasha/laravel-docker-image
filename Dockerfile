@@ -1,10 +1,15 @@
 FROM php:7.4-fpm
 
+ADD crontab /etc/cron.d/laravel
+RUN chmod 0644 /etc/cron.d/laravel
+RUN touch /var/log/cron.log
+
 COPY ./php.ini /usr/local/etc/php/
 
 RUN apt-get -o Acquire::Check-Valid-Until=false update \
     && apt-get update && apt-get install -y --no-install-recommends \
     software-properties-common \
+    cron \
     apt-utils \
     build-essential \
     wget \
@@ -45,7 +50,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 && composer global require 'hirak/prestissimo' --no-interaction --no-suggest --prefer-dist
 
 RUN PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-    && docker-php-ext-install pdo_pgsql pdo_mysql mysqli zip exif pcntl gd bcmath soap gettext imap \
+    && docker-php-ext-install pdo_pgsql pdo_mysql mysqli zip exif pcntl gd bcmath soap gettext imap intl \
+    && docker-php-ext-configure intl \
     && docker-php-ext-configure gd \
     && docker-php-ext-enable xdebug \
     && docker-php-ext-enable redis
@@ -53,3 +59,5 @@ RUN PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ss
 EXPOSE 80
 
 WORKDIR /var/www
+
+CMD cron && tail -f /var/log/cron.log
