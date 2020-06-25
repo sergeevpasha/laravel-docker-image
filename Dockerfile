@@ -2,7 +2,6 @@ FROM php:7.4-fpm
 
 ADD crontab /etc/cron.d/laravel
 RUN chmod 0644 /etc/cron.d/laravel
-RUN touch /var/log/cron.log
 
 COPY ./php.ini /usr/local/etc/php/
 
@@ -56,8 +55,8 @@ RUN PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ss
     && docker-php-ext-enable xdebug \
     && docker-php-ext-enable redis
 
-EXPOSE 80
+RUN service cron start
+
+EXPOSE 9000
 
 WORKDIR /var/www
-
-CMD cron && tail -f /var/log/cron.log
