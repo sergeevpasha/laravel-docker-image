@@ -7,10 +7,6 @@ Built on PHP 7.4-FPM image
 
 Main locale: en_US.UTF-8
 
-## Installed software
-
-* Composer (with hirak/prestissimo package for a parallels dependency loading)
-
 ## PHP Modules
 
 * bcmath       
