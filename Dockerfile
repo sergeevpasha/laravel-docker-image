@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:7.4-fpm
 
 ADD crontab /etc/cron.d/laravel
 RUN chmod 0644 /etc/cron.d/laravel
