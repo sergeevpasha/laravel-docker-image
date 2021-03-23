@@ -1,7 +1,8 @@
-FROM php:7.4-fpm
+FROM php:8.0-fpm
 
 ADD crontab /etc/cron.d/laravel
 RUN chmod 0644 /etc/cron.d/laravel
+RUN crontab /etc/cron.d/laravel
 
 COPY ./php.ini /usr/local/etc/php/
 
@@ -54,9 +55,7 @@ RUN PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ss
     && docker-php-ext-enable xdebug \
     && docker-php-ext-enable redis
 
-RUN crontab /etc/cron.d/laravel
-
-CMD cron
+RUN service cron start
 
 EXPOSE 9000
 
