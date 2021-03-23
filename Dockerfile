@@ -55,8 +55,12 @@ RUN PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ss
     && docker-php-ext-enable redis
 
 RUN crontab /etc/cron.d/laravel
-RUN service cron start
+
+RUN touch /var/log/cron.log
+
+CMD (cron) && : > /var/log/cron.log && tail -f /var/log/cron.log
 
 EXPOSE 9000
 
 WORKDIR /var/www
+
