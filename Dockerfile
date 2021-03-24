@@ -58,7 +58,7 @@ RUN crontab /etc/cron.d/laravel
 
 RUN touch /var/log/cron.log
 
-RUN (cron) && : > /var/log/cron.log && tail -f /var/log/cron.log
+CMD (cron) && : > /var/log/cron.log && tail -f /var/log/cron.log && docker-php-entrypoint php-fpm
 
 EXPOSE 9000
 
